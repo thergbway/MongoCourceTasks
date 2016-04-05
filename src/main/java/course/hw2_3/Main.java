@@ -28,14 +28,14 @@ public class Main {
         MongoCursor<BsonDocument> it = docs.iterator();
 
         BsonDocument prev = it.next();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             BsonDocument next = it.next();
-            if(!prev.getNumber("student_id").equals(next.getNumber("student_id"))){
+            if (!prev.getNumber("student_id").equals(next.getNumber("student_id"))) {
                 grades.deleteOne(Filters.eq("_id", prev.getObjectId("_id")));
             }
             prev = next;
         }
-            grades.deleteOne(Filters.eq("_id", prev.getObjectId("_id")));
+        grades.deleteOne(Filters.eq("_id", prev.getObjectId("_id")));
 
         docs = grades.find(new Document("type", "homework")).sort(new Document("student_id", 1).append("score", -1));
         for (BsonDocument doc : docs) {
